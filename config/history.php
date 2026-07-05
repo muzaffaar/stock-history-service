@@ -27,15 +27,15 @@ return [
 
     'schedule' => [
 
-        'partition' => '08:00',
+        'partition' => '03:30',
 
-        'sync_stocks' => '09:20',
+        'sync_stocks' => '03:40',
 
-        'stats' => '16:05',
+        'stats' => '20:05',
 
-        'backup' => '16:30',
+        'backup' => '20:30',
 
-        'cleanup' => '17:00',
+        'cleanup' => '21:00',
     ],
 
 ];
