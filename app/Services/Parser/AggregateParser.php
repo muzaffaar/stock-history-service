@@ -16,12 +16,6 @@ class AggregateParser
             return null;
         }
 
-        $stockId = $this->stocks->id($message['sym']);
-
-        if (! $stockId) {
-            return null;
-        }
-
         return [
 
             'ticker' => $message['sym'],
