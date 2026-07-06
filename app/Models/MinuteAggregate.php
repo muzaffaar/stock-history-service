@@ -33,7 +33,7 @@ class MinuteAggregate extends Model
         return $this->belongsTo(Stock::class);
     }
 
-    public function scopeTicker(Builder $query, int $stockId): Builder
+    public function scopeTicker(Builder $query, string $stockId): Builder
     {
         return $query->where('ticker', $stockId);
     }
