@@ -12,7 +12,7 @@ class MinuteAggregate extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'stock_id',
+        'ticker',
         'minute',
         'open',
         'high',
@@ -35,7 +35,7 @@ class MinuteAggregate extends Model
 
     public function scopeTicker(Builder $query, int $stockId): Builder
     {
-        return $query->where('stock_id', $stockId);
+        return $query->where('ticker', $stockId);
     }
 
     public function scopeDay(Builder $query, string $date): Builder
