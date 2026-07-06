@@ -10,7 +10,7 @@ return new class extends Migration
         DB::unprepared("
             CREATE TABLE minute_aggregates
             (
-                stock_id BIGINT NOT NULL,
+                ticker VARCHAR(10) NOT NULL,
 
                 minute TIMESTAMP NOT NULL,
 

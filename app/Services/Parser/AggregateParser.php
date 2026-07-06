@@ -24,7 +24,7 @@ class AggregateParser
 
         return [
 
-            'stock_id' => $stockId,
+            'ticker' => $message['sym'],
 
             'minute' => date('Y-m-d H:i:s', intval($message['s'] / 1000)),
 
@@ -42,7 +42,7 @@ class AggregateParser
 
             'vwap' => isset($message['vw']) ? $this->price($message['vw']) : null,
 
-            'transactions' => $message['n'] ?? 0,
+            'transactions' => $message['z'] ?? 0,
         ];
     }
 
