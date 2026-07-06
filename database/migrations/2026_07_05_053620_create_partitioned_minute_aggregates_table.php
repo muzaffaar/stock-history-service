@@ -27,7 +27,7 @@ return new class extends Migration
 
                 transactions INTEGER,
 
-                PRIMARY KEY (stock_id, minute)
+                PRIMARY KEY (ticker, minute)
             )
             PARTITION BY RANGE (minute);
         ");
