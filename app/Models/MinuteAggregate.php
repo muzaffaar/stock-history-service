@@ -19,7 +19,7 @@ class MinuteAggregate extends Model
         'low',
         'close',
         'volume',
-        'av',
+        'accumulated_volume',
         'vwap',
         'transactions',
     ];
@@ -27,11 +27,6 @@ class MinuteAggregate extends Model
     protected $casts = [
         'minute' => 'datetime',
     ];
-
-    public function stock(): BelongsTo
-    {
-        return $this->belongsTo(Stock::class);
-    }
 
     public function scopeTicker(Builder $query, string $stockId): Builder
     {

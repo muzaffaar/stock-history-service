@@ -52,11 +52,22 @@ class MassiveWebSocket
     {
         $this->connection = $connection;
 
-        logger()->info('Connected to Massive');
+        logger()->info('Connected to Massive', [
+            'subscriptions' => config('history.subscriptions'),
+        ]);
 
-        $this->authenticate();
+        try {
 
-        $this->subscribe();
+            $this->authenticate();
+
+            $this->subscribe();
+
+        } catch (\Throwable $e) {
+
+            logger()->error($e);
+
+            $connection->close();
+        }
 
         $this->listen();
     }
@@ -88,22 +99,42 @@ class MassiveWebSocket
     {
         $this->connection->on('message', function ($message) {
 
-            $payload = json_decode((string) $message, true);
+            try {
 
-            dump($payload);
+                $payload = json_decode(
+                    (string) $message,
+                    true,
+                    512,
+                    JSON_THROW_ON_ERROR
+                );
 
-            foreach ($payload as $event) {
-                $this->metrics->message();
-                $this->handleMessage($event);
+                foreach ($payload as $event) {
+                    $this->metrics->message();
+                    $this->handleMessage($event);
+                }
+
+            } catch (\Throwable $e) {
+
+                logger()->error('Message processing failed', [
+                    'error' => $e->getMessage(),
+                    'payload' => (string) $message,
+                ]);
             }
 
         });
 
-        $this->connection->on('close', function () {
+        $this->connection->on('close', function ($code = null, $reason = null) {
 
-            logger()->warning('WebSocket closed');
+            logger()->warning('WebSocket closed', [
+                'code' => $code,
+                'reason' => $reason,
+            ]);
 
-            $this->importer->flush();
+            try {
+                $this->importer->flush();
+            } catch (\Throwable $e) {
+                logger()->error($e);
+            }
 
             $this->reconnect();
 
@@ -125,7 +156,15 @@ class MassiveWebSocket
         logger()->info('Reconnect in 5 seconds...');
 
         Loop::addTimer(5, function () {
-            $this->connect();
+            try {
+                $this->connect();
+
+            } catch (\Throwable $e) {
+
+                logger()->error($e);
+
+                $this->reconnect();
+            }
         });
     }
 
@@ -142,7 +181,15 @@ class MassiveWebSocket
 
             $stats = $this->metrics->status();
 
-            $this->printDashboard($stats);
+            try {
+
+                $this->printDashboard($stats);
+
+            } catch (\Throwable $e) {
+
+                logger()->error($e);
+
+            }
 
         });
     }
@@ -190,7 +237,12 @@ class MassiveWebSocket
                 ) > 60
             ) {
 
-                echo "Heartbeat timeout. Reconnecting..." . PHP_EOL;
+                logger()->warning(
+                    'Heartbeat timeout',
+                    [
+                        'last_message' => $this->metrics->lastMessageAt,
+                    ]
+                );
 
                 $this->connection?->close();
 
@@ -203,7 +255,15 @@ class MassiveWebSocket
     {
         Loop::addPeriodicTimer(2, function () {
 
-            $this->monitor->publish();
+            try {
+
+                $this->monitor->publish();
+
+            } catch (\Throwable $e) {
+
+                logger()->error($e);
+
+            }
 
         });
     }

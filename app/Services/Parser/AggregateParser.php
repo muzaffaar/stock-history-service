@@ -2,14 +2,8 @@
 
 namespace App\Services\Parser;
 
-use App\Services\Cache\StockCacheService;
-
 class AggregateParser
 {
-    public function __construct(
-        private readonly StockCacheService $stocks
-    ) {}
-
     public function parse(array $message): ?array
     {
         if (($message['ev'] ?? null) !== 'AM') {

@@ -14,18 +14,17 @@ return new class extends Migration
 
                 minute TIMESTAMP NOT NULL,
 
-                open INTEGER NOT NULL,
-                high INTEGER NOT NULL,
-                low INTEGER NOT NULL,
-                close INTEGER NOT NULL,
+                open BIGINT NOT NULL,
+                high BIGINT NOT NULL,
+                low BIGINT NOT NULL,
+                close BIGINT NOT NULL,
 
                 volume BIGINT NOT NULL,
+                accumulated_volume BIGINT NOT NULL,
 
-                accumulated_volume BIGINT,
+                vwap BIGINT NOT NULL,
 
-                vwap INTEGER,
-
-                transactions INTEGER,
+                transactions BIGINT NOT NULL,
 
                 PRIMARY KEY (ticker, minute)
             )
@@ -35,8 +34,8 @@ return new class extends Migration
 
     public function down(): void
     {
-        DB::unprepared("
+        DB::unprepared('
             DROP TABLE IF EXISTS minute_aggregates CASCADE;
-        ");
+        ');
     }
 };
