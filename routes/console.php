@@ -31,6 +31,6 @@ Schedule::command('history:backup')
     ->weekdays()
     ->dailyAt($schedule['backup']);
 
-Schedule::command('history:cleanup')
-    ->timezone($tz)
-    ->dailyAt($schedule['cleanup']);
+// Schedule::command('history:cleanup')
+//     ->timezone($tz)
+//     ->dailyAt($schedule['cleanup']);

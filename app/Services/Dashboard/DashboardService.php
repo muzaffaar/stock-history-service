@@ -19,11 +19,12 @@ class DashboardService
             'history' => $this->history(),
 
             'database' => [
-
-                'size_mb' => DB::selectOne("
-                    SELECT pg_database_size(current_database()) size
-                "),
-
+                'size_mb' => round(
+                    DB::selectOne("
+                        SELECT pg_database_size(current_database()) AS size
+                    ")->size / 1024 / 1024,
+                    2
+                ),
             ],
 
         ];
