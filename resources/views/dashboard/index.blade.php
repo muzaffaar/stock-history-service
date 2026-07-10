@@ -1,8 +1,12 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
 
-@section('title', 'Dashboard')
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
 
-@section('content')
+<body>
 
 <div class="container-fluid">
 
@@ -306,4 +310,5 @@
 
 </div>
 
-@endsection
+</body>
+</html>
