@@ -13,8 +13,6 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return view('dashboard.test', [
-            'data' => $this->dashboard->data()
-        ]);
+        return view('dashboard.test');
     }
 }
